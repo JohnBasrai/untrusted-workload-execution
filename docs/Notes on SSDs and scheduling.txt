@@ -1,0 +1,31 @@
+Why scheduling still matters on SSDs
+
+1️⃣ SSDs still have finite internal parallelism
+ * Limited queue depth
+ * Limited write buffers
+ * Garbage collection pauses
+ * Unscheduled access can collapse latency.
+
+2️⃣ Writes interfere with reads (a lot)
+ * SSD firmware does erase + rewrite internally
+ * Large write streams can spike read latency
+ * Scheduling isolates workloads
+
+3️⃣ Page cache & writeback pressure
+ * Dirty page writeback is I/O
+ * Background flushers can starve foreground reads
+ * BFQ prevents writeback storms from dominating
+
+4️⃣ Multi-tenant fairness
+ * On a container host:
+ * One container doing logging
+ * Another serving queries
+ * Without scheduling:
+ * Logs can stall queries
+ * With io.weight:
+ * Queries stay responsive
+
+5️⃣ Latency > throughput for most apps
+ * 99% of services care about:
+ * p95 / p99 latency
+ * tail behavior

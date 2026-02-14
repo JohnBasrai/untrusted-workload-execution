@@ -1,0 +1,18 @@
+* cgroup v2 exposes effective controller values per cgroup, and
+  io.stat reports I/O usage per block device using standard Linux
+  major:minor numbering.
+
+* /sys/fs/cgroup is not a real directory
+  /sys/fs is a virtual filesystem (sysfs + cgroupfs), backed by kernel objects, not disk blocks.
+  What that means concretely
+    No inodes on disk
+    No persistence across reboot
+    Files are generated on read
+    Writes are commands to the kernel
+
+* It is a structured RPC interface disguised as a filesystem
+
+* /sys/fs/cgroup is a virtual kernel interface, not disk-backed storage.
+
+* NVMe devices are PCIe-attached flash exposed as block devices with
+  massive parallelism.

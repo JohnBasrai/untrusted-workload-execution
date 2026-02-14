@@ -1,0 +1,22 @@
+ * io.stat exposes cumulative per-cgroup, per-block-device I/O
+   counters, similar to perf or /proc/stat.
+
+ * They’re monotonically increasing and intended to be sampled over
+   time to derive rates, latency behavior, and contention.
+
+* Correct mental model
+
+  * io.stat ≈ hardware performance counters
+  * reported per block device
+  * Snapshot → wait → snapshot → compute delta
+  * Used for:
+     Throughput analysis
+     Contention diagnosis
+     Fairness validation
+
+* NVMe devices have
+
+  - deep queues and firmware-level scheduling,
+  - kernel I/O scheduling focuses more on fairness and latency isolation
+    than raw throughput,
+  - which is why cgroup I/O control still matters even on fast SSDs.
